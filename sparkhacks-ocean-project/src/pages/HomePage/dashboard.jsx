@@ -5,8 +5,8 @@ import { getAuth } from "firebase/auth";
 import "./Dashboard.css";
 import sharkSvg from "../../assets/fish-svgrepo-com.svg";
 import seaweedSvg from "../../assets/seaweed-svgrepo-com.svg";
-import fish from "../../assets/yellow-fish.svg"
-import jellyfish from "../../assets/jellyfish-svgrepo-com.svg"
+import fish from "../../assets/yellow-fish.svg";
+import jellyfish from "../../assets/jellyfish-svgrepo-com.svg";
 import RoamingItems from "./RoamingItems";
 import ProgressBar from "./progress_bar";
 
@@ -14,6 +14,7 @@ const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [highlightedTask, setHighlightedTask] = useState(null);
+  const [progress, setProgress] = useState(0);
 
   const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
   const hardcodedPrompt = "Give 10 Specific things I can do to help the environment";
@@ -34,6 +35,10 @@ const Dashboard = () => {
         }));
         setTasks(userTasks);
         setCompletedTasks(userTasks.map((task) => task.status === "COMPLETE"));
+
+        // Update progress based on loaded tasks
+        const completedCount = userTasks.filter((task) => task.status === "COMPLETE").length;
+        setProgress(Math.min(completedCount * 25, 100)); // Cap at 100%
       } else {
         try {
           const res = await axios.post(
@@ -62,6 +67,17 @@ const Dashboard = () => {
 
           setTasks(taskList);
           setCompletedTasks(new Array(taskList.length).fill(false));
+
+        // Save tasks to Firebase
+          const tasksToSave = taskList.reduce((acc, task, index) => {
+            acc[`task${index + 1}`] = {
+              name: task.name,
+              status: task.status,
+            };
+            return acc;
+          }, {});
+
+          await set(userRef, tasksToSave);
         } catch (error) {
           console.error("Error fetching tasks:", error);
           setTasks([
@@ -78,6 +94,11 @@ const Dashboard = () => {
     setCompletedTasks((prev) => {
       const newCompletedTasks = [...prev];
       newCompletedTasks[index] = !newCompletedTasks[index];
+
+      // Calculate progress: 25% per completed task, capped at 100%
+      const completedCount = newCompletedTasks.filter(Boolean).length;
+      setProgress(Math.min(completedCount * 25, 100));
+
       return newCompletedTasks;
     });
 
@@ -118,7 +139,12 @@ const Dashboard = () => {
       <img src={seaweedSvg} className="seaweed seaweed-1" alt="Seaweed" />
       <img src={seaweedSvg} className="seaweed seaweed-2" alt="Seaweed" />
       <img src={seaweedSvg} className="seaweed seaweed-3" alt="Seaweed" />
-      <RoamingItems></RoamingItems>
+      <RoamingItems />
+
+      {/* Progress Bar */}
+      <ProgressBar progress={progress} />
+
+      {/* Task List */}
       <div className="task-list">
         <div className="checklist-header">
           <span className="checklist-number"></span>
