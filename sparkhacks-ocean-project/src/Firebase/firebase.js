@@ -7,7 +7,7 @@ import { getDatabase } from "firebase/database";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyD2PE8X1H5qQ7P_Ja7j1Vs17-fHmc7pViY",
+  apiKey: import.meta.env.FIREBASE_API_KEY,
   authDomain: "ocean-task-project.firebaseapp.com",
   projectId: "ocean-task-project",
   storageBucket: "ocean-task-project.firebasestorage.app",
@@ -18,7 +18,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);const auth = getAuth(app);
+const analytics = getAnalytics(app);
+const auth = getAuth(app);
 const database = getDatabase(app);
 
 // Adjusted Function to create an account - Now returns a Promise
