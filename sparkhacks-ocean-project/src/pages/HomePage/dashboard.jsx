@@ -3,7 +3,7 @@ import axios from "axios";
 
 const API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
-function App() {
+function DashBoard() {
   const [input, setInput] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
@@ -65,4 +65,4 @@ function App() {
   );
 }
 
-export default App;
+export default DashBoard;
