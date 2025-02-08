@@ -28,14 +28,10 @@ const Dashboard = () => {
         );
 
         const taskList = res.data.choices[0].message.content
-        .split("\n")
-        .filter((line) => line.includes("**"))  // Filter lines containing tasks
-        .map((line) => line
-            .replace(/\*\*/g, '')  // Remove **
-            .replace(/:\s*$/, '')  // Remove trailing colon
-            .trim()  // Trim whitespace
-        );
-        
+          .split("\n")
+          .filter((line) => line.includes("**"))
+          .map((line) => line.replace(/\*\*/g, '').replace(/:\s*$/, '').trim());
+
         setTasks(taskList);
         setCompletedTasks(new Array(taskList.length).fill(false));
       } catch (error) {
@@ -47,7 +43,7 @@ const Dashboard = () => {
     fetchTasks();
   }, []);
 
-  const handleCheckboxChange = (index) => {
+  const handleTaskClick = (index) => {
     setCompletedTasks((prev) => {
       const newCompletedTasks = [...prev];
       newCompletedTasks[index] = !newCompletedTasks[index];
@@ -58,22 +54,27 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <h1>10 Tasks to Help the Environment</h1>
-      <ul className="task-list">
-        {tasks.length > 0 ? (
-          tasks.map((task, index) => (
-            <li key={index}>
-              <input
-                type="checkbox"
-                checked={completedTasks[index] || false}
-                onChange={() => handleCheckboxChange(index)}
-              />
-              {task}
-            </li>
-          ))
-        ) : (
-          <p>Loading tasks...</p>
-        )}
-      </ul>
+      <div className="task-list-container" style={{ maxHeight: "300px", overflowY: "auto" }}>
+        <ul className="task-list">
+          {tasks.length > 0 ? (
+            tasks.map((task, index) => (
+              <li key={index}>
+                <button
+                  className={`task-button ${completedTasks[index] ? "clicked" : ""}`}
+                  onClick={() => handleTaskClick(index)}
+                >
+                  {task}
+                </button>
+              </li>
+            ))
+          ) : (
+            <p>Loading tasks...</p>
+          )}
+        </ul>
+      </div>
+      {completedTasks.filter(Boolean).length >= 4 && (
+        <button className="completed-button">Complete</button>
+      )}
     </div>
   );
 };
