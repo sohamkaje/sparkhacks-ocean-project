@@ -17,22 +17,21 @@ const Login = () => {
       get(userRef).then((snapshot) => {
         if (!snapshot.exists()) {
           set(userRef, {
-            email: user.email || 'No email provided',
-            name: user.displayName || 'No name provided',
-            score: '',
+            email: user.email,
+            name: user.displayName,
+            score: 0, // Initialize score if needed
             tasks: {
-              daily: {
-                complete: '',
-                incomplete: ''
-              },
-              longterm:{
-                complete: '',
-                incomplete: ''
-              },
-              weekly: {
-                complete: '',
-                incomplete: ''
-              }
+              "task1": "",
+              "task2": "",
+              "task3": "",
+              "task4": "",
+              "task5": "",
+              "task6": "",
+              "task7": "",
+              "task8": "",
+              "task9": "",
+              "task10": ""
+              // Initialize tasks with default status
             }
           }).then(() => {
             console.log("New user added to database:", user.uid);

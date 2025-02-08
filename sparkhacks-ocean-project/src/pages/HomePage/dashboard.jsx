@@ -28,10 +28,14 @@ const Dashboard = () => {
         );
 
         const taskList = res.data.choices[0].message.content
-          .split("\n")
-          .filter((line) => line.match(/^\d+\./))
-          .map((line) => line.replace(/^\d+\.\s*/, ""));
-
+        .split("\n")
+        .filter((line) => line.includes("**"))  // Filter lines containing tasks
+        .map((line) => line
+            .replace(/\*\*/g, '')  // Remove **
+            .replace(/:\s*$/, '')  // Remove trailing colon
+            .trim()  // Trim whitespace
+        );
+        
         setTasks(taskList);
         setCompletedTasks(new Array(taskList.length).fill(false));
       } catch (error) {
