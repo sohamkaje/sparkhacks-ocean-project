@@ -15,7 +15,7 @@ const Login = () => {
       console.log("User signed in:", user);
 
       // Navigate to the home page after login
-      navigate("/home");
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error during Google Sign-In:", error.code, error.message);
     }
