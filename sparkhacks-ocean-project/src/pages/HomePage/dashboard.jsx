@@ -1,68 +1,82 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "./Dashboard.css";
 
-const API_URL = "https://api.groq.com/openai/v1/chat/completions";
+const Dashboard = () => {
+  const [tasks, setTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
+  const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
+  const hardcodedPrompt = "Give 10 Specific things I can do to help the environment";
 
-function DashBoard() {
-  const [input, setInput] = useState("");
-  const [response, setResponse] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const fetchGroqResponse = async () => {
-    setLoading(true);
-
-    const apiKey = import.meta.env.VITE_GROQ_API_KEY;
-    if (!apiKey) {
-      console.error("Error: API key is missing.");
-      setResponse("Error: Missing API key.");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const res = await axios.post(
-        API_URL,
-        {
-          model: "llama3-8b-8192",
-          messages: [{ role: "user", content: input }],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${apiKey}`,
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const res = await axios.post(
+          "https://api.groq.com/openai/v1/chat/completions",
+          {
+            model: "llama3-8b-8192",
+            messages: [{ role: "user", content: hardcodedPrompt }],
+            temperature: 0.7,
+            max_tokens: 1024,
           },
-        }
-      );
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${API_KEY}`,
+            },
+          }
+        );
 
-      if (res.data.choices && res.data.choices.length > 0) {
-        setResponse(res.data.choices[0].message.content);
-      } else {
-        setResponse("No response from AI.");
+        const taskList = res.data.choices[0].message.content
+          .split("\n")
+          .filter((line) => line.includes("**"))
+          .map((line) => line.replace(/\*\*/g, '').replace(/:\s*$/, '').trim());
+
+        setTasks(taskList);
+        setCompletedTasks(new Array(taskList.length).fill(false));
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+        setTasks(["Error loading tasks. Please try again."]);
       }
+    };
 
-      console.log("API Response:", res.data);
-    } catch (error) {
-      console.error("Error fetching response:", error);
-      setResponse(error.response?.data?.error?.message || "Failed to fetch response.");
-    }
+    fetchTasks();
+  }, []);
 
-    setLoading(false);
+  const handleTaskClick = (index) => {
+    setCompletedTasks((prev) => {
+      const newCompletedTasks = [...prev];
+      newCompletedTasks[index] = !newCompletedTasks[index];
+      return newCompletedTasks;
+    });
   };
 
   return (
-    <div className="container">
-      <h1>Groq AI Chat</h1>
-      <textarea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Ask something..."
-      />
-      <button onClick={fetchGroqResponse} disabled={loading}>
-        {loading ? "Generating..." : "Get Response"}
-      </button>
-      <p><strong>Response:</strong> {response}</p>
+    <div className="dashboard-container">
+      <h1>10 Tasks to Help the Environment</h1>
+      <div className="task-list-container" style={{ maxHeight: "300px", overflowY: "auto" }}>
+        <ul className="task-list">
+          {tasks.length > 0 ? (
+            tasks.map((task, index) => (
+              <li key={index}>
+                <button
+                  className={`task-button ${completedTasks[index] ? "clicked" : ""}`}
+                  onClick={() => handleTaskClick(index)}
+                >
+                  {task}
+                </button>
+              </li>
+            ))
+          ) : (
+            <p>Loading tasks...</p>
+          )}
+        </ul>
+      </div>
+      {completedTasks.filter(Boolean).length >= 4 && (
+        <button className="completed-button">Complete</button>
+      )}
     </div>
   );
-}
+};
 
-export default DashBoard;
+export default Dashboard;

@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider, database, ref, set, get } from '../../Firebase/firebase.js';
 import "./login.css";
 import sharkSvg from "../../assets/fish-svgrepo-com.svg";
 import seaweedSvg from "../../assets/seaweed-svgrepo-com.svg";
@@ -9,10 +11,46 @@ import jellyfish from "../../assets/jellyfish-svgrepo-com.svg"
 
 
 const Login = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // ✅ Initialize useNavigate hook
 
-  const handleLogin = () => {
-    navigate("/home");
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const userRef = ref(database, `users/${user.uid}`);
+
+      get(userRef).then((snapshot) => {
+        if (!snapshot.exists()) {
+          set(userRef, {
+            email: user.email,
+            name: user.displayName,
+            score: 0, // Initialize score if needed
+            tasks: {
+              "task1": "",
+              "task2": "",
+              "task3": "",
+              "task4": "",
+              "task5": "",
+              "task6": "",
+              "task7": "",
+              "task8": "",
+              "task9": "",
+              "task10": ""
+              // Initialize tasks with default status
+            }
+          }).then(() => {
+            console.log("New user added to database:", user.uid);
+          }).catch((error) => {
+            console.error("Failed to add user to database:", error);
+          });
+        }
+      });
+
+      navigate("/dashboard"); // Redirect after successful login
+    } catch (error) {
+      console.error("Error during Google Sign-In:", error);
+      alert("Failed to sign in with Google: " + error.message);
+    }
   };
 
   return (
@@ -61,7 +99,7 @@ const Login = () => {
         <p className="description">
           Collaborate with us to make the planet a better place for future generations.
         </p>
-        <button className="google-login" onClick={handleLogin} aria-label="Sign in with Google">
+        <button className="google-login" onClick={handleGoogleLogin}>
           <FcGoogle size={24} /> Sign in with Google
         </button>
         <button
