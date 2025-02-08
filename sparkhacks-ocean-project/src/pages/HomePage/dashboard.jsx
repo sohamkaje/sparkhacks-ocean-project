@@ -1,68 +1,57 @@
-import { useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
 
-const API_URL = "https://api.groq.com/openai/v1/chat/completions";
+const Dashboard = () => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-function DashBoard() {
-  const [input, setInput] = useState("");
-  const [response, setResponse] = useState("");
-  const [loading, setLoading] = useState(false);
+  const deepseekApiKey = process.env.REACT_APP_DEEPSEEK_API_KEY; // Access the API key from .env
 
-  const fetchGroqResponse = async () => {
-    setLoading(true);
-
-    const apiKey = import.meta.env.VITE_GROQ_API_KEY;
-    if (!apiKey) {
-      console.error("Error: API key is missing.");
-      setResponse("Error: Missing API key.");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const res = await axios.post(
-        API_URL,
-        {
-          model: "llama3-8b-8192",
-          messages: [{ role: "user", content: input }],
-        },
-        {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://api.deepseek.com/v1/endpoint', {
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${apiKey}`,
+            'Authorization': `Bearer ${deepseekApiKey}`,
+            'Content-Type': 'application/json',
           },
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
-      );
 
-      if (res.data.choices && res.data.choices.length > 0) {
-        setResponse(res.data.choices[0].message.content);
-      } else {
-        setResponse("No response from AI.");
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      console.log("API Response:", res.data);
-    } catch (error) {
-      console.error("Error fetching response:", error);
-      setResponse(error.response?.data?.error?.message || "Failed to fetch response.");
-    }
+    fetchData();
+  }, [deepseekApiKey]);
 
-    setLoading(false);
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
-    <div className="container">
-      <h1>Groq AI Chat</h1>
-      <textarea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Ask something..."
-      />
-      <button onClick={fetchGroqResponse} disabled={loading}>
-        {loading ? "Generating..." : "Get Response"}
-      </button>
-      <p><strong>Response:</strong> {response}</p>
+    <div>
+      <h1>Dashboard</h1>
+      {data ? (
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      ) : (
+        <p>No data available</p>
+      )}
     </div>
   );
-}
+};
 
-export default DashBoard;
+export default Dashboard;
