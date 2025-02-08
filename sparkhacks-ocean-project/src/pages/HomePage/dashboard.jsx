@@ -1,55 +1,75 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./Dashboard.css";
 
 const Dashboard = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const deepseekApiKey = process.env.REACT_APP_DEEPSEEK_API_KEY; // Access the API key from .env
+  const [tasks, setTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
+  const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
+  const hardcodedPrompt = "Give 10 Specific things I can do to help the environment";
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchTasks = async () => {
       try {
-        const response = await fetch('https://api.deepseek.com/v1/endpoint', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${deepseekApiKey}`,
-            'Content-Type': 'application/json',
+        const res = await axios.post(
+          "https://api.groq.com/openai/v1/chat/completions",
+          {
+            model: "llama3-8b-8192",
+            messages: [{ role: "user", content: hardcodedPrompt }],
+            temperature: 0.7,
+            max_tokens: 1024,
           },
-        });
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${API_KEY}`,
+            },
+          }
+        );
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+        const taskList = res.data.choices[0].message.content
+          .split("\n")
+          .filter((line) => line.match(/^\d+\./))
+          .map((line) => line.replace(/^\d+\.\s*/, ""));
 
-        const result = await response.json();
-        setData(result);
+        setTasks(taskList);
+        setCompletedTasks(new Array(taskList.length).fill(false));
       } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching tasks:", error);
+        setTasks(["Error loading tasks. Please try again."]);
       }
     };
 
-    fetchData();
-  }, [deepseekApiKey]);
+    fetchTasks();
+  }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+  const handleCheckboxChange = (index) => {
+    setCompletedTasks((prev) => {
+      const newCompletedTasks = [...prev];
+      newCompletedTasks[index] = !newCompletedTasks[index];
+      return newCompletedTasks;
+    });
+  };
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      {data ? (
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      ) : (
-        <p>No data available</p>
-      )}
+    <div className="dashboard-container">
+      <h1>10 Tasks to Help the Environment</h1>
+      <ul className="task-list">
+        {tasks.length > 0 ? (
+          tasks.map((task, index) => (
+            <li key={index}>
+              <input
+                type="checkbox"
+                checked={completedTasks[index] || false}
+                onChange={() => handleCheckboxChange(index)}
+              />
+              {task}
+            </li>
+          ))
+        ) : (
+          <p>Loading tasks...</p>
+        )}
+      </ul>
     </div>
   );
 };
