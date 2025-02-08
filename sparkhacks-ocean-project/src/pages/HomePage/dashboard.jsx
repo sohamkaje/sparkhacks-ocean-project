@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getDatabase, ref, get, set } from "firebase/database";
 import { getAuth } from "firebase/auth";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Dashboard.css";
 import sharkSvg from "../../assets/fish-svgrepo-com.svg";
 import seaweedSvg from "../../assets/seaweed-svgrepo-com.svg";
@@ -15,8 +16,10 @@ const Dashboard = () => {
   const [completedTasks, setCompletedTasks] = useState([]);
   const [highlightedTask, setHighlightedTask] = useState(null);
   const [progress, setProgress] = useState(0);
-  const [hideTrash, setHideTrash] = useState(false); // New state to hide trash items
+  const [hideTrash, setHideTrash] = useState(false);
+  const [showPopup, setShowPopup] = useState(false); // New state for popup
 
+  const navigate = useNavigate(); // Hook for navigating
   const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
   const hardcodedPrompt = "Give 10 Specific things I can do to help the environment";
   const auth = getAuth();
@@ -37,7 +40,6 @@ const Dashboard = () => {
         setTasks(userTasks);
         setCompletedTasks(userTasks.map((task) => task.status === "COMPLETE"));
 
-        // Update progress based on loaded tasks
         const completedCount = userTasks.filter((task) => task.status === "COMPLETE").length;
         setProgress(Math.min(completedCount * 25, 100));
       } else {
@@ -68,26 +70,13 @@ const Dashboard = () => {
 
           setTasks(taskList);
           setCompletedTasks(new Array(taskList.length).fill(false));
-
-        // Save tasks to Firebase
-          const tasksToSave = taskList.reduce((acc, task, index) => {
-            acc[`task${index + 1}`] = {
-              name: task.name,
-              status: task.status,
-            };
-            return acc;
-          }, {});
-
-          await set(userRef, tasksToSave);
         } catch (error) {
           console.error("Error fetching tasks:", error);
-          setTasks([
-            { name: "Error loading tasks. Please try again.", status: "INCOMPLETE" },
-          ]);
+          setTasks([{ name: "Error loading tasks. Please try again.", status: "INCOMPLETE" }]);
         }
       }
     };
-    
+
     fetchTasks();
   }, [auth]);
 
@@ -96,7 +85,6 @@ const Dashboard = () => {
       const newCompletedTasks = [...prev];
       newCompletedTasks[index] = !newCompletedTasks[index];
 
-      // Calculate progress: 25% per completed task, capped at 100%
       const completedCount = newCompletedTasks.filter(Boolean).length;
       setProgress(Math.min(completedCount * 25, 100));
 
@@ -124,8 +112,8 @@ const Dashboard = () => {
 
     await set(ref(db, `users/${user.uid}/tasks`), taskStatuses);
 
-    // Hide only roaming trash items, keeping shark and seaweed visible
-    setHideTrash(true);
+    setHideTrash(true); // Hide Roaming Trash Items
+    setShowPopup(true); // Show Popup after completion
   };
 
   return (
@@ -178,6 +166,19 @@ const Dashboard = () => {
           </button>
         )}
       </div>
+
+      {/* Popup Message (Shows After Completion) */}
+      {showPopup && (
+        <div className="popup">
+          <div className="popup-content">
+            <h2>🎉 Good Job Helping the Planet! 🌍</h2>
+            <p>Wait for the next day for tasks to reset.</p>
+            <button className="popup-button" onClick={() => navigate("/")}>
+              Go to Login
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
