@@ -1,0 +1,89 @@
+/* Ocean-Themed Carbon Footprint Reducer - Main Page CSS */
+
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #0077be, #00a6fb);
+    color: #fff;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+/* Header */
+header {
+    background: rgba(0, 51, 102, 0.9);
+    padding: 20px;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Wave Animation */
+.ocean {
+    position: relative;
+    height: 100px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.wave {
+    position: absolute;
+    top: -10px;
+    width: 200%;
+    height: 100px;
+    background: url('https://i.imgur.com/UMZaQHY.png');
+    background-size: cover;
+    animation: waveMove 8s linear infinite;
+}
+
+@keyframes waveMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Main Content */
+main {
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+
+/* Call-to-Action Button */
+.button {
+    background: #00cc99;
+    color: #fff;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    border-radius: 25px;
+    display: inline-block;
+    transition: background 0.3s;
+}
+
+.button:hover {
+    background: #009973;
+}
+
+/* Footer */
+footer {
+    background: rgba(0, 51, 102, 0.9);
+    padding: 20px;
+    font-size: 0.9rem;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}

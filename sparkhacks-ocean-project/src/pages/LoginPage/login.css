@@ -1,29 +1,104 @@
-/* Ensure full-screen coverage */
+/* Full-Screen Gradient Background */
 body, html {
   height: 100%;
   margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to bottom, #0077b6, #0096c7, #00b4d8, #48cae4);
+  background: linear-gradient(-45deg, #0077b6, #0096c7, #00b4d8, #48cae4);
+  background-size: 400% 400%;
+  animation: gradientBG 10s ease infinite;
+  font-family: "Poppins", sans-serif;
 }
 
-/* Centering the login box */
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Centered Login Container */
 .login-container {
-  display: flex;
+  display: off;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
+  width: 100%;
+  height: 100%;
 }
 
-/* Styling the login box */
+/* Login Box with Glassmorphism */
 .login-box {
   background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   padding: 2rem;
-  border-radius: 10px;
+  border-radius: 12px;
   text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  width: 360px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.login-box:hover {
+  transform: scale(1.03);
+}
+
+/* Title Styling */
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+/* Buttons */
+.google-login, .home-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.google-login {
+  background: white;
+  color: #444;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.google-login:hover {
+  background: #f1f1f1;
+}
+
+.home-button {
+  margin-top: 10px;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  color: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  width: 350px; /* Slightly wider */
+}
+
+.home-button:hover {
+  background: linear-gradient(90deg, #0072ff, #00c6ff);
+}
+
+/* Add Subtle Fade-In Animation */
+.login-box {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
