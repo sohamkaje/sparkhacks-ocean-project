@@ -48,7 +48,7 @@ const About = () => {
         <h2 className="title">About Our Project</h2>
         <p className="subtitle">Discover the story behind our mission.</p>
         <p className="description">
-          We are a passionate team dedicated to creating innovative solutions that make a difference. Our goal is to provide a seamless and enjoyable experience for our users while promoting sustainability and environmental awareness.
+            DeepBlue is your personal sustainability coach. Every day, we provide 10 AI-powered eco-tasks tailored to guide you toward a greener lifestyle. As you complete tasks, you’ll see the polluted water in the app clear up in real-time, visualizing the positive impact of your actions. It’s a fun and satisfying way to track your progress and stay motivated!
         </p>
         <button className="explore-button">Learn More</button>
       </div>

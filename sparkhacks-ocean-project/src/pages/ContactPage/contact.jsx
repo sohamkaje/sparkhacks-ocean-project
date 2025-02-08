@@ -48,7 +48,11 @@ const Contact = () => {
         <h2 className="title">Contact Us</h2>
         <p className="subtitle">We'd love to hear from you!</p>
         <p className="description">
-          Have questions or feedback? Reach out to us, and we'll get back to you as soon as possible.
+            Vasu Patel: vpate217@uic.edu<br />
+            Soham Kaje: skaje2@uic.edu<br />
+            Mit Patel: mpate348@uic.edu<br />
+            Shriniket Karody: skaro4@uic.edu<br />
+            Aditiya Saisiva: asais2@uic.edu
         </p>
         <button className="explore-button">Send a Message</button>
       </div>

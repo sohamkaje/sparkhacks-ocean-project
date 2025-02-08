@@ -48,7 +48,7 @@ const Mission = () => {
         <h2 className="title">Our Mission</h2>
         <p className="subtitle">Driving change through innovation.</p>
         <p className="description">
-          Our mission is to empower individuals and communities by providing sustainable solutions that address global challenges. We believe in the power of technology and collaboration to create a better future for all.
+            At DeepBlue, we believe that sustainability doesn’t have to be overwhelming. Our mission is to make eco-friendly living simple, engaging, and rewarding. We inspire people to take small, meaningful actions every day to help the environment—one step at a time.
         </p>
         <button className="explore-button">Get Involved</button>
       </div>
