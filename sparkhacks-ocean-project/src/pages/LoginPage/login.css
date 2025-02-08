@@ -1,104 +1,380 @@
-/* Full-Screen Gradient Background */
+/* Global Styles */
 body, html {
-  height: 100%;
   margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(-45deg, #0077b6, #0096c7, #00b4d8, #48cae4);
-  background-size: 400% 400%;
-  animation: gradientBG 10s ease infinite;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
   font-family: "Poppins", sans-serif;
+  color: #ffffff;
 }
 
-@keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Centered Login Container */
+/* Full Page Background */
 .login-container {
-  display: off;
-  justify-content: center;
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(to bottom, #001f3f, #00274d, #004080);
+  overflow: hidden;
+}
+
+/* Top Bar */
+.top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: black;
+  z-index: 2;
+}
+
+/* Header */
+.login-header {
+  position: absolute;
+  top: 20px;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  z-index: 3;
+}
+
+.login-header h1 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-left: 30px;
+}
+
+.login-header nav a {
+  position: relative;
+  color: #ffffff;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.login-header nav a:hover {
+  color: #00b4d8;
+}
+
+.login-header nav a::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #00b4d8;
+  transition: width 0.3s ease;
+}
+
+.login-header nav a:hover::after {
+  width: 100%;
+}
+
+.bubbles {
+  position: absolute;
   width: 100%;
   height: 100%;
+  z-index: 1;
+  overflow: hidden;
 }
 
-/* Login Box with Glassmorphism */
+.bubble {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: rise 5s infinite ease-in-out;
+}
+
+/* Randomized Bubble Sizes */
+.bubble:nth-child(1) {
+  width: 10px;
+  height: 10px;
+  bottom: -10%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.bubble:nth-child(2) {
+  width: 15px;
+  height: 15px;
+  bottom: -20%;
+  left: 20%;
+  animation-delay: 2s;
+}
+
+.bubble:nth-child(3) {
+  width: 12px;
+  height: 12px;
+  bottom: -15%;
+  left: 35%;
+  animation-delay: 3s;
+}
+
+.bubble:nth-child(4) {
+  width: 20px;
+  height: 20px;
+  bottom: -10%;
+  left: 50%;
+  animation-delay: 4s;
+}
+
+.bubble:nth-child(5) {
+  width: 18px;
+  height: 18px;
+  bottom: -18%;
+  left: 70%;
+  animation-delay: 5s;
+}
+
+/* Add More Bubbles */
+.bubble:nth-child(6) {
+  width: 14px;
+  height: 14px;
+  bottom: -25%;
+  left: 80%;
+  animation-delay: 6s;
+}
+
+.bubble:nth-child(7) {
+  width: 22px;
+  height: 22px;
+  bottom: -30%;
+  left: 90%;
+  animation-delay: 7s;
+}
+
+.bubble:nth-child(8) {
+  width: 16px;
+  height: 16px;
+  bottom: -12%;
+  left: 10%;
+  animation-delay: 8s;
+}
+
+/* You can keep adding more bubbles by incrementing the nth-child */
+
+/* Animation for Bubbles */
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) scale(0.5);
+    opacity: 0;
+  }
+}
+
+
+/* Fish */
+.fish {
+  position: absolute;
+  width: 50px;
+  height: 20px;
+  background: orange;
+  border-radius: 10px;
+  animation: swim 8s linear infinite;
+  z-index: 1;
+}
+
+@keyframes swim {
+  0% {
+    left: -10%;
+    transform: translateY(20px) scale(1);
+  }
+  100% {
+    left: 110%;
+    transform: translateY(-20px) scale(0.8);
+  }
+}
+
+/* Shark */
+.shark {
+  position: absolute;
+  bottom: 30%;
+  right: -100px;
+  width: 150px;
+  height: 50px;
+  background: gray;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  animation: sharkMove 15s linear infinite;
+  z-index: 1;
+}
+
+@keyframes sharkMove {
+  0% {
+    right: -150px;
+  }
+  100% {
+    right: 110%;
+  }
+}
+
+/* Seaweed */
+.seaweed {
+  position: absolute;
+  bottom: 60px;
+  left: 10%;
+  width: 20px;
+  height: 100px;
+  background: green;
+  border-radius: 10px;
+  animation: sway 3s infinite ease-in-out;
+}
+
+@keyframes sway {
+  0%, 100% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(-10deg);
+  }
+}
+
+/* Sand */
+.sand {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background: #c2b280;
+  z-index: 0;
+}
+
+/* Login Box */
 .login-box {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(12px);
+  position: relative;
+  background: linear-gradient(to bottom right, #1e1f3a, #2a2c54);
+  border-radius: 20px;
   padding: 2rem;
-  border-radius: 12px;
+  width: 450px;
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  width: 360px;
-  transition: transform 0.3s ease-in-out;
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.5);
+  margin: 150px auto 0;
+  z-index: 2;
+  animation: fadeIn 1.2s ease-out;
 }
 
-.login-box:hover {
-  transform: scale(1.03);
-}
-
-/* Title Styling */
 .title {
   font-size: 2.5rem;
   font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #b3b4d1;
   margin-bottom: 1rem;
-  color: white;
+}
+
+.description {
+  font-size: 1rem;
+  color: #d1d2e8;
+  margin-bottom: 2rem;
+  line-height: 1.5;
 }
 
 /* Buttons */
-.google-login, .home-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
+.google-login, .explore-button {
+  background: linear-gradient(90deg, #007cf0, #00dfd8);  color: #ffffff;
+  font-size: 1.2rem;
   padding: 12px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
+  width: 100%;
+  margin: 10px 0;
   border: none;
+  border-radius: 10px;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.google-login {
-  background: white;
-  color: #444;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
 .google-login:hover {
-  background: #f1f1f1;
+  background: #3c3e6f;
+  transform: scale(1.05);
 }
 
-.home-button {
-  margin-top: 10px;
-  background: linear-gradient(90deg, #00c6ff, #0072ff);
-  color: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+.explore-button {
+  background: linear-gradient(90deg, #007cf0, #00dfd8);
+  box-shadow: 0 4px 15px rgba(0, 124, 240, 0.4);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
 
-.home-button:hover {
-  background: linear-gradient(90deg, #0072ff, #00c6ff);
+.explore-button:hover {
+  box-shadow: 0 6px 20px rgba(0, 124, 240, 0.6);
+  transform: scale(1.05);
 }
 
-/* Add Subtle Fade-In Animation */
-.login-box {
-  animation: fadeIn 1s ease-in-out;
-}
-
+/* Animations */
 @keyframes fadeIn {
-  from {
+  0% {
     opacity: 0;
-    transform: scale(0.95);
+    transform: translateY(30px);
   }
-  to {
+  100% {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0);
   }
+}
+
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #b3b4d1;
+  margin-bottom: 1rem;
+}
+
+.description {
+  font-size: 1rem;
+  color: #d1d2e8;
+  margin-bottom: 2rem;
+}
+
+/* Footer */
+.login-footer {
+  position: absolute;
+  bottom: 13px; /* Moves the footer above the sand */
+  width: 100%;
+  text-align: center;
+}
+
+.login-footer p {
+  font-size: 2rem;
+  color: #d1d2e8;
+  margin-bottom: 10px;
+}
+
+.logos {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px; /* Adds spacing between items */
+}
+
+.logos span {
+  display: inline-block;
+  background: #282a50;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #d1d2e8;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.logos span:hover {
+  background: #3c3e6f;
 }
