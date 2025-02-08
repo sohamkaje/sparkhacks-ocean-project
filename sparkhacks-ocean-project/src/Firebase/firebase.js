@@ -5,20 +5,20 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
-const firebaseConfig = {  
-  apiKey: "AIzaSyD2dOFOS111YZ-zibekBsrxJ4qLus0lhPE",
-  authDomain: "recipe-maker-423a7.firebaseapp.com",
-  projectId: "recipe-maker-423a7",
-  storageBucket: "recipe-maker-423a7.appspot.com",
-  messagingSenderId: "329579428591",
-  appId: "1:329579428591:web:0dab792c312ef090c5b91a",
-  measurementId: "G-MBQB6QSXC6"
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyD2PE8X1H5qQ7P_Ja7j1Vs17-fHmc7pViY",
+  authDomain: "ocean-task-project.firebaseapp.com",
+  projectId: "ocean-task-project",
+  storageBucket: "ocean-task-project.firebasestorage.app",
+  messagingSenderId: "95892150287",
+  appId: "1:95892150287:web:3245c86a24be6591e5ab7a",
+  measurementId: "G-CY4PJ6P701"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app);
+const analytics = getAnalytics(app);const auth = getAuth(app);
 const database = getDatabase(app);
 
 // Adjusted Function to create an account - Now returns a Promise
