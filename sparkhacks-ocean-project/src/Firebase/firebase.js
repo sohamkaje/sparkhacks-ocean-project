@@ -1,8 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getDatabase } from "firebase/database";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -18,24 +16,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);const auth = getAuth(app);
-const database = getDatabase(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
-// Adjusted Function to create an account - Now returns a Promise
-export function createAcct(email, password) {
-    // Return the promise here so it can be used with .then() and .catch() in the component
-    return createUserWithEmailAndPassword(auth, email, password);
-}
-
-// Email validation function
-export function checkEmail(email) {
-  const expression = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return expression.test(email);
-}
-
-// Password validation function
-export function checkPass(password) {
-  return password.length >= 7;
-}
-
-export { app, analytics, auth, database };
+export { auth, provider};
