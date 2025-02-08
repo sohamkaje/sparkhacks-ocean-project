@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [completedTasks, setCompletedTasks] = useState([]);
   const [highlightedTask, setHighlightedTask] = useState(null);
   const [progress, setProgress] = useState(0);
+  const [hideTrash, setHideTrash] = useState(false); // New state to hide trash items
 
   const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
   const hardcodedPrompt = "Give 10 Specific things I can do to help the environment";
@@ -30,7 +31,7 @@ const Dashboard = () => {
       const snapshot = await get(userRef);
       if (snapshot.exists()) {
         const userTasks = Object.entries(snapshot.val()).map(([key, value]) => ({
-          name: value.name.replace(/^\d+\.\s*/, ""), // Remove leading numbers
+          name: value.name.replace(/^\d+\.\s*/, ""), 
           status: value.status,
         }));
         setTasks(userTasks);
@@ -38,7 +39,7 @@ const Dashboard = () => {
 
         // Update progress based on loaded tasks
         const completedCount = userTasks.filter((task) => task.status === "COMPLETE").length;
-        setProgress(Math.min(completedCount * 25, 100)); // Cap at 100%
+        setProgress(Math.min(completedCount * 25, 100));
       } else {
         try {
           const res = await axios.post(
@@ -86,7 +87,7 @@ const Dashboard = () => {
         }
       }
     };
-
+    
     fetchTasks();
   }, [auth]);
 
@@ -122,6 +123,9 @@ const Dashboard = () => {
     }, {});
 
     await set(ref(db, `users/${user.uid}/tasks`), taskStatuses);
+
+    // Hide only roaming trash items, keeping shark and seaweed visible
+    setHideTrash(true);
   };
 
   return (
@@ -133,13 +137,19 @@ const Dashboard = () => {
         ))}
       </div>
       <div className="sand"></div>
+
+      {/* Shark and Seaweed should ALWAYS be visible */}
       <img src={sharkSvg} className="shark" alt="Swimming shark in the ocean" />
-      <img src={fish} className="fish" alt="Swimming Fish" />
-      <img src={jellyfish} className="jellyfish" alt="Floating Jellyfish" />
       <img src={seaweedSvg} className="seaweed seaweed-1" alt="Seaweed" />
       <img src={seaweedSvg} className="seaweed seaweed-2" alt="Seaweed" />
       <img src={seaweedSvg} className="seaweed seaweed-3" alt="Seaweed" />
-      <RoamingItems />
+
+      {/* Keep Fish and Jellyfish Always Visible */}
+      <img src={fish} className="fish" alt="Swimming Fish" />
+      <img src={jellyfish} className="jellyfish" alt="Floating Jellyfish" />
+
+      {/* Hide RoamingItems (floating trash) when the Complete button is clicked */}
+      {!hideTrash && <RoamingItems />}
 
       {/* Progress Bar */}
       <ProgressBar progress={progress} />
@@ -147,7 +157,6 @@ const Dashboard = () => {
       {/* Task List */}
       <div className="task-list">
         <div className="checklist-header">
-          <span className="checklist-number"></span>
           <h2 className="checklist-title">Daily Tasks</h2>
         </div>
         <ol>
