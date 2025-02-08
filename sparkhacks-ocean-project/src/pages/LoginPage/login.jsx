@@ -6,12 +6,11 @@ import { auth, provider, database, ref, set, get } from '../../Firebase/firebase
 import "./login.css";
 import sharkSvg from "../../assets/fish-svgrepo-com.svg";
 import seaweedSvg from "../../assets/seaweed-svgrepo-com.svg";
-import fish from "../../assets/yellow-fish.svg"
-import jellyfish from "../../assets/jellyfish-svgrepo-com.svg"
-
+import fish from "../../assets/yellow-fish.svg";
+import jellyfish from "../../assets/jellyfish-svgrepo-com.svg";
 
 const Login = () => {
-  const navigate = useNavigate(); // ✅ Initialize useNavigate hook
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const handleGoogleLogin = async () => {
     try {
@@ -71,8 +70,8 @@ const Login = () => {
       <img src={seaweedSvg} className="seaweed seaweed-2" alt="Seaweed" />
       <img src={seaweedSvg} className="seaweed seaweed-3" alt="Seaweed" />
       <div className="sand" aria-hidden="true">
-      <div className="logos">
-      <span aria-label="Partner Aditiya">🌟 Aditiya</span>
+        <div className="logos">
+          <span aria-label="Partner Aditiya">🌟 Aditiya</span>
           <span aria-label="Partner Vasu">🌟 Vasu</span>
           <span aria-label="Partner Soham">🌟 Soham</span>
           <span aria-label="Partner Shriniket">🌟 Shriniket</span>
@@ -85,10 +84,46 @@ const Login = () => {
       <div className="login-header">
         <h1>DeepBlue</h1>
         <nav>
-          <a href="#" aria-label="Learn about DeepBlue">About</a>
-          <a href="#" aria-label="Our mission statement">Our Mission</a>
-          <a href="#" aria-label="Contact us">Contact</a>
-          <a href="#" aria-label="Learn more about DeepBlue">Learn More</a>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/about");
+            }}
+            aria-label="Learn about DeepBlue"
+          >
+            About
+          </a>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/mission");
+            }}
+            aria-label="Our mission statement"
+          >
+            Our Mission
+          </a>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/contact");
+            }}
+            aria-label="Contact us"
+          >
+            Contact
+          </a>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/learnmore");
+            }}
+            aria-label="Learn more about DeepBlue"
+          >
+            Learn More
+          </a>
         </nav>
       </div>
 
@@ -110,18 +145,6 @@ const Login = () => {
           Start Reducing Now
         </button>
       </div>
-
-      {/* Footer */}
-      {/* <footer className="login-footer">
-        
-        {/* <div className="logos">
-          <span aria-label="Partner Aditiya">🌟 Aditiya</span>
-          <span aria-label="Partner Vasu">🌟 Vasu</span>
-          <span aria-label="Partner Soham">🌟 Soham</span>
-          <span aria-label="Partner Shriniket">🌟 Shriniket</span>
-          <span aria-label="Partner Mit">🌟 Mit</span>
-        </div> */}
-      {/* </footer> */} 
     </div>
   );
 };
