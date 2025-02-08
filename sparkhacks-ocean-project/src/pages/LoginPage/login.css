@@ -26,7 +26,7 @@ body, html {
   width: 100%;
   height: 80px;
   background: black;
-  z-index: 2;
+  z-index: 3;
 }
 
 /* Header */
@@ -37,7 +37,7 @@ body, html {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 3;
+  z-index: 4;
 }
 
 .login-header h1 {
@@ -74,6 +74,7 @@ body, html {
   width: 100%;
 }
 
+/* Bubbles */
 .bubbles {
   position: absolute;
   width: 100%;
@@ -130,7 +131,6 @@ body, html {
   animation-delay: 5s;
 }
 
-/* Add More Bubbles */
 .bubble:nth-child(6) {
   width: 14px;
   height: 14px;
@@ -155,8 +155,6 @@ body, html {
   animation-delay: 8s;
 }
 
-/* You can keep adding more bubbles by incrementing the nth-child */
-
 /* Animation for Bubbles */
 @keyframes rise {
   0% {
@@ -169,40 +167,59 @@ body, html {
   }
 }
 
-
-/* Fish */
+/* Fish Moving Left to Right */
 .fish {
   position: absolute;
-  width: 50px;
-  height: 20px;
-  background: orange;
-  border-radius: 10px;
-  animation: swim 8s linear infinite;
-  z-index: 1;
+  width: 50px; /* Adjust size */
+  height: auto;
+  bottom: 10%; /* Adjust height */
+  left: -10%;
+  animation: swim-right 30s linear infinite;
 }
 
-@keyframes swim {
+/* Jellyfish Floating Up and Down */
+.jellyfish {
+  position: absolute;
+  width: 60px; /* Adjust size */
+  height: auto;
+  bottom: 50%; /* Adjust height */
+  left: 70%; /* Adjust horizontal placement */
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Animation for Fish Swimming Right */
+@keyframes swim-right {
   0% {
     left: -10%;
-    transform: translateY(20px) scale(1);
   }
   100% {
     left: 110%;
-    transform: translateY(-20px) scale(0.8);
   }
 }
 
-/* Shark */
+/* Animation for Jellyfish Floating */
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+
 .shark {
   position: absolute;
   bottom: 30%;
   right: -100px;
-  width: 150px;
-  height: 50px;
-  background: gray;
-  clip-path: polygon(0 0, 100% 50%, 0 100%);
-  animation: sharkMove 15s linear infinite;
-  z-index: 1;
+  width: 75px; /* Adjust size as needed */
+  height: auto; /* Maintain aspect ratio */
+  animation: sharkMove 20s linear infinite;
+  z-index: 2;
+  transform: scaleX(-1); /* Flip horizontally */
 }
 
 @keyframes sharkMove {
@@ -214,35 +231,65 @@ body, html {
   }
 }
 
-/* Seaweed */
 .seaweed {
   position: absolute;
-  bottom: 60px;
-  left: 10%;
-  width: 20px;
-  height: 100px;
-  background: green;
-  border-radius: 10px;
-  animation: sway 3s infinite ease-in-out;
+  bottom: 50px; /* Position it above the sand */
+  height: auto; /* Maintain aspect ratio */
+  z-index: 3; /* Ensure it's above the sand */
 }
 
-@keyframes sway {
-  0%, 100% {
-    transform: rotate(10deg);
-  }
-  50% {
-    transform: rotate(-10deg);
-  }
+/* Specific seaweed positions */
+.seaweed-1 {
+  left: 10%;
+  width: 55px;
+  bottom: 30px;
 }
+
+.seaweed-2 {
+  left: 30%;
+  width: 70px;
+}
+
+.seaweed-3 {
+  left: 70%;
+  width: 48px;
+  bottom: 40px;
+}
+
 
 /* Sand */
 .sand {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 60px;
-  background: #c2b280;
-  z-index: 0;
+  height: 200px; /* Increased height for the sand */
+  background: linear-gradient(to top, #c2b280, #d2c29d);
+  z-index: 1;
+  clip-path: path(
+    "M0,200 C50,170 150,180 250,150 C350,120 450,140 550,160 C650,180 750,130 850,145 C950,160 1050,140 1150,170 C1250,190 1350,160 1440,200 L1440,200 L0,200 Z"
+  ); /* Ensures consistent rendering */
+  -webkit-clip-path: path(
+    "M0,200 C50,170 150,180 250,150 C350,120 450,140 550,160 C650,180 750,130 850,145 C950,160 1050,140 1150,170 C1250,190 1350,160 1440,200 L1440,200 L0,200 Z"
+  ); /* Added vendor prefix */
+  overflow: hidden;
+  transform: translateZ(0); /* Prevents flickering */
+}
+
+/* Sand Details */
+.sand::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0.2) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+  opacity: 0.8;
 }
 
 /* Login Box */
@@ -283,7 +330,8 @@ body, html {
 
 /* Buttons */
 .google-login, .explore-button {
-  background: linear-gradient(90deg, #007cf0, #00dfd8);  color: #ffffff;
+  background: linear-gradient(90deg, #007cf0, #00dfd8);
+  color: #ffffff;
   font-size: 1.2rem;
   padding: 12px;
   width: 100%;
@@ -322,45 +370,27 @@ body, html {
   }
 }
 
-
-.title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #ffffff;
-  margin-bottom: 0.5rem;
-}
-
-.subtitle {
-  font-size: 1.5rem;
-  font-weight: 300;
-  color: #b3b4d1;
-  margin-bottom: 1rem;
-}
-
-.description {
-  font-size: 1rem;
-  color: #d1d2e8;
-  margin-bottom: 2rem;
-}
 /* Footer */
 .login-footer {
   position: absolute;
-  bottom: 13px; /* Moves the footer above the sand */
+  bottom: 20px;
   width: 100%;
   text-align: center;
+  z-index: 2;
+  background: linear-gradient(#004080);
 }
 
 .login-footer p {
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #d1d2e8;
-  margin-bottom: 10px;
+  margin: 0;
 }
 
 .logos {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px; /* Adds spacing between items */
+  gap: 10px;
+  padding-top: 30px;
 }
 
 .logos span {
