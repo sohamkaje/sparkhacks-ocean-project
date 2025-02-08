@@ -2,22 +2,49 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../Firebase/firebase"; // Adjust path if needed
+import { auth, provider, database, ref, set, get } from '../../Firebase/firebase.js';
 import "./login.css";
 
 const Login = () => {
-  const navigate = useNavigate(); // Hook to handle navigation
+  const navigate = useNavigate(); // ✅ Initialize useNavigate hook
 
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      console.log("User signed in:", user);
+      const userRef = ref(database, `users/${user.uid}`);
 
-      // Navigate to the home page after login
-      navigate("/home");
+      get(userRef).then((snapshot) => {
+        if (!snapshot.exists()) {
+          set(userRef, {
+            email: user.email || 'No email provided',
+            score: '',
+            tasks: {
+              daily: {
+                complete: '',
+                incomplete: ''
+              },
+              longterm: {
+                complete: '',
+                incomplete: ''
+              },
+              weekly: {
+                complete: '',
+                incomplete: ''
+              }
+            }
+          }).then(() => {
+            console.log("New user added to database:", user.uid);
+          }).catch((error) => {
+            console.error("Failed to add user to database:", error);
+          });
+        }
+      });
+
+      navigate("/dashboard"); // Redirect after successful login
     } catch (error) {
-      console.error("Error during Google Sign-In:", error.code, error.message);
+      console.error("Error during Google Sign-In:", error);
+      alert("Failed to sign in with Google: " + error.message);
     }
   };
 
