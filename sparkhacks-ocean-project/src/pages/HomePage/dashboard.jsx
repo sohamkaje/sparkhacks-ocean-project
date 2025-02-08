@@ -3,6 +3,12 @@ import axios from "axios";
 import { getDatabase, ref, get, set } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import "./Dashboard.css";
+import sharkSvg from "../../assets/fish-svgrepo-com.svg";
+import seaweedSvg from "../../assets/seaweed-svgrepo-com.svg";
+import fish from "../../assets/yellow-fish.svg"
+import jellyfish from "../../assets/jellyfish-svgrepo-com.svg"
+import RoamingItems from "./RoamingItems";
+import ProgressBar from "./progress_bar";
 
 const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
@@ -105,11 +111,14 @@ const Dashboard = () => {
           <div key={index} className="bubble"></div>
         ))}
       </div>
-      <div className="fish"></div>
-      <div className="shark"></div>
       <div className="sand"></div>
-
-      {/* Task List */}
+      <img src={sharkSvg} className="shark" alt="Swimming shark in the ocean" />
+      <img src={fish} className="fish" alt="Swimming Fish" />
+      <img src={jellyfish} className="jellyfish" alt="Floating Jellyfish" />
+      <img src={seaweedSvg} className="seaweed seaweed-1" alt="Seaweed" />
+      <img src={seaweedSvg} className="seaweed seaweed-2" alt="Seaweed" />
+      <img src={seaweedSvg} className="seaweed seaweed-3" alt="Seaweed" />
+      <RoamingItems></RoamingItems>
       <div className="task-list">
         <div className="checklist-header">
           <span className="checklist-number"></span>
