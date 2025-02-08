@@ -18,13 +18,14 @@ const Login = () => {
         if (!snapshot.exists()) {
           set(userRef, {
             email: user.email || 'No email provided',
+            name: user.displayName || 'No name provided',
             score: '',
             tasks: {
               daily: {
                 complete: '',
                 incomplete: ''
               },
-              longterm: {
+              longterm:{
                 complete: '',
                 incomplete: ''
               },
