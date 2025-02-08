@@ -53,28 +53,25 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <h1>10 Tasks to Help the Environment</h1>
-      <div className="task-list-container" style={{ maxHeight: "300px", overflowY: "auto" }}>
-        <ul className="task-list">
-          {tasks.length > 0 ? (
-            tasks.map((task, index) => (
-              <li key={index}>
-                <button
-                  className={`task-button ${completedTasks[index] ? "clicked" : ""}`}
-                  onClick={() => handleTaskClick(index)}
-                >
-                  {task}
-                </button>
-              </li>
-            ))
-          ) : (
-            <p>Loading tasks...</p>
-          )}
-        </ul>
+      <div className="checklist-header">
+        <span>1</span>
+        <h2>10 Tasks to Help the Environment</h2>
       </div>
-      {completedTasks.filter(Boolean).length >= 4 && (
-        <button className="completed-button">Complete</button>
-      )}
+      <ul className="task-list">
+        {tasks.length > 0 ? (
+          tasks.map((task, index) => (
+            <li key={index}>
+              <button
+                className={`task-button ${completedTasks[index] ? "clicked" : ""}`}
+                onClick={() => handleTaskClick(index)}
+              ></button>
+              {task}
+            </li>
+          ))
+        ) : (
+          <p>Loading tasks...</p>
+        )}
+      </ul>
     </div>
   );
 };
