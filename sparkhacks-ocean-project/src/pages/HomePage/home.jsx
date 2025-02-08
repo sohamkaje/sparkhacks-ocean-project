@@ -1,43 +1,53 @@
 import React from "react";
 import "./Home.css";
+import fish from "../../assets/yellow-fish.svg";
+import jellyfish from "../../assets/jellyfish-svgrepo-com.svg";
 
 const Home = () => {
   return (
-    <div className="dashboard-container">
-      {/* Left Side - Climate Content */}
-      <div className="home-container">
-        <header>
-          <h1>Reduce Your Carbon Footprint</h1>
-          <p>Join us in making the planet a cleaner place.</p>
-        </header>
-        <div className="ocean">
-          <div className="wave"></div>
-        </div>
-        <main>
-          <section>
-            <h2>Why It Matters</h2>
-            <p>
-              Carbon emissions contribute to climate change, affecting ecosystems, weather patterns, and sea levels.
-            </p>
-          </section>
-          <section>
-            <h2>How You Can Help</h2>
-            <ul>
-              <li>Use renewable energy sources.</li>
-              <li>Reduce waste and recycle.</li>
-              <li>Choose sustainable transportation.</li>
-              <li>Support eco-friendly products.</li>
-            </ul>
-          </section>
-          <div className="button-container">
-            <a href="/learn-more" className="button">Learn More</a>
-            <a href="/dashboard" className="button show-tasks">Show 10 Tasks</a>
-          </div>
-        </main>
-        <footer>
-          <p>&copy; 2025 Ocean Carbon Initiative. All rights reserved.</p>
-        </footer>
+    <div className="home-container">
+      {/* Top Navigation */}
+      <header className="top-bar">
+        <h1>DeepBlue</h1>
+        <nav>
+          <a href="#">About</a>
+          <a href="#">Our Mission</a>
+          <a href="#">Contact</a>
+          <a href="#">Learn More</a>
+        </nav>
+      </header>
+
+      {/* Ocean Background with Floating Elements */}
+      <div className="ocean">
+        <div className="wave"></div>
+        <img src={fish} className="fish swim-left" alt="Swimming Fish" />
+        <img src={jellyfish} className="jellyfish float" alt="Floating Jellyfish" />
       </div>
+
+      {/* Main Info Box */}
+      <div className="info-box">
+        <h1 className="title">Join the Wave</h1>
+        <h2 className="subtitle">Reduce Your Carbon Footprint</h2>
+        <p className="description">
+          Join us in making the planet a better place for future generations.
+        </p>
+        <div className="button-container">
+          <a href="/learn-more" className="button">Learn More</a>
+          <a href="/dashboard" className="button show-tasks">Start Now</a>
+        </div>
+      </div>
+
+      {/* Footer with Partners */}
+      <footer className="login-footer">
+        <p>Our Partners:</p>
+        <div className="logos">
+          <span>🌟 Aditiya</span>
+          <span>🌟 Vasu</span>
+          <span>🌟 Soham</span>
+          <span>🌟 Shriniket</span>
+          <span>🌟 Mit</span>
+        </div>
+      </footer>
     </div>
   );
 };
