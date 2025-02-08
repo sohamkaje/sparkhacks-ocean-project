@@ -23,7 +23,7 @@ const Dashboard = () => {
       const snapshot = await get(userRef);
       if (snapshot.exists()) {
         const userTasks = Object.entries(snapshot.val()).map(([key, value]) => ({
-          name: value.name,
+          name: value.name.replace(/^\d+\.\s*/, ""), // Remove leading numbers
           status: value.status,
         }));
         setTasks(userTasks);
@@ -50,7 +50,7 @@ const Dashboard = () => {
             .split("\n")
             .filter((line) => line.includes("**"))
             .map((line) =>
-              line.replace(/\*\*/g, "").replace(/:\s*$/, "").trim()
+              line.replace(/\*\*/g, "").replace(/^\d+\.\s*/, "").trim()
             )
             .map((task) => ({ name: task, status: "INCOMPLETE" }));
 
@@ -75,10 +75,8 @@ const Dashboard = () => {
       return newCompletedTasks;
     });
 
-    // Apply highlight class
     setHighlightedTask(index);
 
-    // Remove highlight after animation completes (500ms)
     setTimeout(() => {
       setHighlightedTask(null);
     }, 500);
@@ -114,10 +112,10 @@ const Dashboard = () => {
       {/* Task List */}
       <div className="task-list">
         <div className="checklist-header">
-          <span className="checklist-number">1</span>
-          <h2 className="checklist-title">10 Tasks to Help the Environment</h2>
+          <span className="checklist-number"></span>
+          <h2 className="checklist-title">Daily Tasks</h2>
         </div>
-        <ul>
+        <ol>
           {tasks.map((task, index) => (
             <li key={index} className="task-item">
               <button
@@ -129,7 +127,7 @@ const Dashboard = () => {
               </button>
             </li>
           ))}
-        </ul>
+        </ol>
         {completedTasks.filter(Boolean).length >= 4 && (
           <button className="completed-button" onClick={handleComplete}>
             Complete
